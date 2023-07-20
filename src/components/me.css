@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&family=Signika+Negative:wght@400&display=swap');
+
+
+body {
+  font-family: 'signika negative';
+  color: rgb(30, 30, 31) ;
+  text-align: center;
+  font-size: small;
+}
+
+/*body {
+      background: url(https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/rm218batch4-aum-18.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=3c1fa990a02cd07cafd1d52ce5a0fa05);
+background-size: 100%
+}*/
+
+/*img {
+  border-style: none;
+  border-radius: 5px;
+  border-width: 10px;
+}*/

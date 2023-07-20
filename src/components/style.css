@@ -1,0 +1,42 @@
+.container {
+    display: 'flex';
+    align-items: 'center';
+    justify-content: 'center';
+    height: '100vh';
+    font-family: 'Arial, sans-serif';
+  }
+  form {
+    display: 'flex';
+    flex-direction: 'column';
+    width: '300px';
+    padding: '20px';
+    padding-top: 20%;
+    padding-bottom: 20%;
+    padding-left: 45%;
+    padding-right: 20%;
+    border: '1px solid #ccc';
+    border-radius: '4px';
+    background-color:rgb(253, 253, 253);
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Solid_white.svg/2048px-Solid_white.svg.png');
+  }
+  input {
+    margin-Bottom: '10px';
+    padding: '10px';
+    font-Size: '20px';
+  }
+  button {
+    padding: '10px';
+    font-Size: '16px';
+    background-color: rgb(159, 155, 155);
+    color: 'black';
+    border: 'none';
+    cursor: 'pointer';
+  }
+  .error {
+    color: 'black';
+    margin-Bottom: '10px';
+  }
+   body{
+    background-image: url('https://wallpaperaccess.com/full/346956.jpg');
+    background-size: cover;
+   }
