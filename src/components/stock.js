@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './stock.css';
-const Stock = () => {
-  const [products, setProducts] = useState([
-    { id: 1, name: 'Product 1', price: 10 },
-    { id: 2, name: 'Product 2', price: 20 },
-    { id: 3, name: 'Product 3', price: 30 },
-  ]);
 
-  const [newProduct, setNewProduct] = useState({ name: '', price: '' });
+
+
+const Stock = () => {
+  const [products, setProducts] = useState([]);
+  const [newProduct, setNewProduct] = useState({ name: '', price: '', quantity: '', date: '' });
+
+  const fetchStock = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/stocks');
+      setProducts(response.data);
+    } catch (error) {
+      console.error('Error fetching stock:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchStock();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,106 +29,137 @@ const Stock = () => {
     }));
   };
 
-  const handleAddProduct = () => {
-    if (newProduct.name && newProduct.price) {
-      const updatedProducts = [...products, { ...newProduct, id: Date.now() }];
-      setProducts(updatedProducts);
-      setNewProduct({ name: '', price: '' });
+  const handleAddProduct = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/api/stocks/add', newProduct);
+      setProducts([...products, response.data]);
+      setNewProduct({ name: '', price: '', quantity: '', date: '' });
+    } catch (error) {
+      console.error('Error adding product:', error);
     }
   };
 
-  const handleDeleteProduct = (productId) => {
-    const updatedProducts = products.filter((product) => product.id !== productId);
-    setProducts(updatedProducts);
+  const handleDeleteProduct = async (productId) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/stocks/${productId}`);
+      const updatedProducts = products.filter((product) => product.id !== productId);
+      setProducts(updatedProducts);
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
   };
 
-  const handleUpdateProduct = (productId, updatedProduct) => {
-    const updatedProducts = products.map((product) =>
-      product.id === productId ? { ...product, ...updatedProduct } : product
-    );
-    setProducts(updatedProducts);
+  const handleUpdateProduct = async (productId, updatedProduct) => {
+    try {
+      await axios.put(`http://localhost:8080/api/stocks/${productId}`, updatedProduct);
+      const updatedProducts = products.map((product) =>
+        product.id === productId ? { ...product, ...updatedProduct } : product
+      );
+      setProducts(updatedProducts);
+    } catch (error) {
+      console.error('Error updating product:', error);
+    }
   };
 
   return (
-    <div className="container py-5"style = {{backgroundColor : 'gray', borderRadius:'20px',  fontColor:'black' , padding: '30px',width: '100%',height: '100vh'}}>
-      <h1 className="text-center mb-4" style = {{color : 'white'}}>Stock</h1>
-
-      <table className="table table-striped"><center style = {{backgroundColor : 'grey', padding: '.625em',color:'black', borderRadius:'3px', marginRight: '150px', marginLeft: '150px', marginBottom: '50px', marginTop: '50px',border: '20%' }}>
-        <thead>
+    
+    
+    
+      
+        <div className="container mt-4">
+      <h1 className="mb-4">Stock Table</h1>
+      <table className="table table-bordered">
+        <thead className="thead-dark">
+        
           <tr>
             <th>ID</th><br></br>
-            <th>Name</th><br></br>
-            <th>Quantity</th><br></br>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Date</th>
             <th>Actions</th>
           </tr>
-         
         </thead>
+        
         <tbody>
+          
           {products.map((product) => (
             <tr key={product.id}>
-              <td>{product.id}</td><br></br>
-              <td>{product.name}</td><br></br>
-              <td>${product.price}</td><br></br>
+              <td>{product.id}</td>
+              <td>{product.name}</td>
+              <td>{product.price}</td>
+              <td>{product.quantity}</td>
+              <td>{product.date}</td>
               <td>
-                <button style={{width:'100%',height: '10%'}}className="btn btn-danger mr-2" onClick={() => handleDeleteProduct(product.id)}>
-                  Delete
-                </button><br></br>
-                <button className="btn btn-primary" onClick={() => handleUpdateProduct(product.id, { name: `Updated ${product.name}`, price: product.price + 10 })}>
+              
+                <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
+                <button
+                  onClick={() =>
+                    handleUpdateProduct(product.id, {
+                      name: `Updated ${product.name}`,
+                      price: product.price + 10,
+                    })
+                  }
+                >
+                 
                   Update
-                </button><br></br>
+                </button>
               </td>
             </tr>
           ))}
-        </tbody></center>
+        </tbody>
       </table>
-
-      <h2 className="mt-4" style = {{marginRight:'-40px',marginTop:'-200px',position:'left',color : 'black'}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Product&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
-
-      <div className="row">
-        <div className="col-sm-6">
-          <div className="form-group">
-            <label htmlFor="nameInput" style = {{marginRight:'-100px',marginTop:'-100px',color : 'white',width: '30%'}}>&nbsp;&nbsp;Product Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" style = {{fontSize: '50%',color : 'black'}}></span>
-              </div>
-            <input
-              type="text"
-              className="form-control"
-              id="nameInput"
-              name="name"
-              value={newProduct.name}
-              onChange={handleInputChange}
-            />
-          </div>
-        </div>
-        <div className="row">
-        <div className="col-sm-6">
-          <div className="form-group">
-            <label htmlFor="priceInput" style = {{marginRight:'-100px',marginTop:'-100px',color : 'white'}}>Quantity:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" style = {{fontSize: '50%',color : 'black'}}></span>
-              </div>
-              <input
-                type="text"
-                className="form-control"
-                id="priceInput"
-                name="price"
-                value={newProduct.price}
-                onChange={handleInputChange}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-<br></br>
-      <button className="btn btn-success" onClick={handleAddProduct}>
-       Send  Order 
-      </button>
+      
+      <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Product</h2><br></br>
+      <div>
+      <div className='img'>
+              <img  align = "left" src="https://static.vecteezy.com/system/resources/previews/005/647/959/original/isometric-illustration-concept-man-analyzing-goods-in-warehouse-free-vector.jpg" width="400" height="350"></img></div>
+        <label>Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input
+          type="text"
+          name="name"
+          value={newProduct.name}
+          onChange={handleInputChange}
+          required
+        />
+      </div><br></br>
+      <div>
+        <label>Price:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input
+          type="number"
+          name="price"
+          value={newProduct.price}
+          onChange={handleInputChange}
+          required
+        />
+         
+      </div><br></br>
+      <div>
+        <label>Quantity:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input
+          type="number"
+          name="quantity"
+          value={newProduct.quantity}
+          onChange={handleInputChange}
+          required
+        />
+      </div><br></br>
+      <div>
+      
+        <label>Date:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input
+          type="date"
+          name="date"
+          value={newProduct.date}
+          onChange={handleInputChange}
+          required
+        />
+        
+      </div><br></br>
+      
+      <button onClick={handleAddProduct}>Add Product</button>
     </div>
-    </div>
-    </div>
+  
   );
 };
 

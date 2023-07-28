@@ -14,9 +14,10 @@
     padding-bottom: 20%;
     padding-left: 45%;
     padding-right: 20%;
+    border-color: black;
     border: '1px solid #ccc';
     border-radius: '4px';
-    background-color:rgb(253, 253, 253);
+    background-color:rgb(255, 250, 250);
     background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Solid_white.svg/2048px-Solid_white.svg.png');
   }
   input {
@@ -27,7 +28,7 @@
   button {
     padding: '10px';
     font-Size: '16px';
-    background-color: rgb(159, 155, 155);
+    background-color: rgb(249, 246, 246);
     color: 'black';
     border: 'none';
     cursor: 'pointer';

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 import './home.css';
     const Home =() => {
+      const email = useSelector((state) => state.login.email);
+    const username = email.substr(0, email.indexOf('@'));
       return (
   
         
@@ -27,6 +29,12 @@ import './home.css';
                       <li>
                         <Link to="/stock"><a href="javascript:void(0);" data-title="New stock">Stocks&nbsp;&nbsp;</a></Link>
                       </li>
+                      <li>
+                       <Link to="/feedback"> <a href="javascript:void(0);" data-title="Feedback">FeedBack</a></Link>
+                      </li>
+                      <li>
+                       <Link to="/login"> <a href="javascript:void(0);" data-title="Feedback">Logout</a></Link>
+                      </li>
                       
                     </ul>
                   </nav>
@@ -34,6 +42,7 @@ import './home.css';
                 <main>
                   <div className="title">
                     <h2>Inventory Management&nbsp;&nbsp;&nbsp;</h2>
+                    <p>{"Logged in as :" +username}</p>
                   <Link to="/About"> <a href="javascript:void(0);">Profile</a></Link>
                   </div>
                   <article className="larg">
@@ -53,7 +62,6 @@ import './home.css';
                       <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bulk Shipment <span/></h3>
                       <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bulk shipments are a cost-efficient way of shipping in which businesses palletize inventory to ship in sizeable volumes. Large quantities of goods are transported in a single shipment, typically using specialized equipment such as tankers, hopper cars, or containers. </p>
                     </div>
-                    
                   </article>
                 </main>
               </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './contact.css';
+
     const Contact =() => {
       return (
         
@@ -10,7 +11,7 @@ import './contact.css';
               
 
               <div className='img'>
-              <img align = "left" src="https://uploads-ssl.webflow.com/6231a9898a805d1c9d8ebbdf/626aaa0de4be84f391bdf2d6_Welcome--5ec7b8b301d036001ad4f948.png" width="500" height="500"></img>
+              <img  align = "left" src="https://uploads-ssl.webflow.com/6231a9898a805d1c9d8ebbdf/626aaa0de4be84f391bdf2d6_Welcome--5ec7b8b301d036001ad4f948.png" width="400" height="250"></img>
 
               <form>      
                 <center><h2>Contact us</h2></center> 
